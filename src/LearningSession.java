@@ -3,9 +3,32 @@ import java.util.Random;
 
 public class LearningSession {
 
-    final static long totalTime = 60 * 60 * 1000;
-    final static long workTime = 2 * 60 * 1000;
-    final static long breakTime = 10 * 1000;
+    private long totalTime = 60 * 1000;
+    private long workTime = 60 * 1000;
+    private long breakTime = 1000;
+    private boolean randomRewards = true;
+
+    /**
+     * Basic constructor with predefined values. Recommended.
+     */
+    public LearningSession() {
+        this.totalTime *= 60;
+        this.workTime *= 2;
+        this.breakTime *= 10;
+    }
+
+    /**
+     * @param totalTime Number of minutes your work session will be in minutes.
+     * @param workTime Safe time before random break comes in minutes.
+     * @param breakTime Break duration in seconds.
+     * @param randomRewards Whether to add random rewards in the sessions.
+     */
+    public LearningSession(long totalTime, long workTime, long breakTime, boolean randomRewards) {
+        this.totalTime *= totalTime;
+        this.workTime *= totalTime;
+        this.breakTime *= totalTime;
+        this.randomRewards = randomRewards;
+    }
 
     /**
      * Creates a 60-minute work plan, with intermittent random breaks.
@@ -13,7 +36,7 @@ public class LearningSession {
      * a break is scheduled. During this break it's recommended to do nothing.
      * @throws InterruptedException If Thread.sleep() fails
      */
-    public static void learningSession() throws InterruptedException {
+    public void learningSession() throws InterruptedException {
     final Random random = new Random();
 
     long startTime = System.currentTimeMillis();
@@ -29,6 +52,7 @@ public class LearningSession {
 
         // Start break
         playBreakSound();
+        playRewardSound();
         Thread.sleep(breakTime);
     }
 }
@@ -36,24 +60,34 @@ public class LearningSession {
     /**
      * Plays work specific sound.
      */
-    private static void playWorkSound() {
-        playBeep(2);
+    private void playWorkSound() {
+        playBeep(1);
         System.out.println("Start Working");
     }
 
     /**
      * Play break specific time.
      */
-    private static void playBreakSound() {
-        playBeep(4);
+    private void playBreakSound() {
+        playBeep(1);
         System.out.println("Get a break");
+    }
+
+    /**
+     * Plays reward at random periods
+     */
+    private void playRewardSound() {
+        Random random = new Random();
+        if(random.nextInt(10) == 9) {
+            playBeep(2);
+        }
     }
 
     /**
      * Plays n beeps to designate different sounds.
      * @param n Number of beeps to be played.
      */
-    private static void playBeep(int n) {
+    private void playBeep(int n) {
         for(int i = 0; i < n; ++i) {
             Toolkit.getDefaultToolkit().beep();
             try {
