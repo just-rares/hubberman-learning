@@ -19,7 +19,7 @@ public class LearningSession {
 
     /**
      * @param totalTime Number of minutes your work session will be in minutes.
-     * @param workTime Safe time before random break comes in minutes.
+     * @param workTime Safe time before random break comes in seconds.
      * @param breakTime Break duration in seconds.
      * @param randomRewards Whether to add random rewards in the sessions.
      */
@@ -47,7 +47,7 @@ public class LearningSession {
         Thread.sleep(workTime);
 
         // Random time for break within the next minute
-        long randomBreakTime = random.nextInt(60 * 1000);
+        long randomBreakTime = random.nextInt(60 * 100);
         Thread.sleep(randomBreakTime);
 
         // Start break
@@ -78,8 +78,10 @@ public class LearningSession {
      */
     private void playRewardSound() {
         Random random = new Random();
-        if(random.nextInt(10) == 9) {
+        int randomNumber = random.nextInt(6);
+        if(randomNumber == 5) {
             playBeep(2);
+            System.out.println("Get a Reward");
         }
     }
 
